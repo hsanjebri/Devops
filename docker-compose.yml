@@ -15,6 +15,7 @@ services:
   app-station-ski:
     depends_on:
       - mysqldb
+    image: hassanjebri/gestion-station-ski:1.0.0
     # Uncomment if you need to build locally instead of using the image
     # build: ./
     restart: on-failure
