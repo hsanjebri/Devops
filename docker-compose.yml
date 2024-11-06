@@ -15,7 +15,7 @@ services:
   app-station-ski:
     depends_on:
       - mysqldb
-    image: sarrajouini/station-ski:1.0.0
+    image: sarrajouini/tp-station-ski:1.0.0
     # Uncomment if you need to build locally instead of using the image
     # build: ./
     restart: on-failure
