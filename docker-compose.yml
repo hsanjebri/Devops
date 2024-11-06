@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mysqldb:
-    image: mysql:5.7
+    image: mysql:8.0.30
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=
@@ -15,7 +15,7 @@ services:
   app-station-ski:
     depends_on:
       - mysqldb
-    image: hsan/station-ski:1.0.0
+    image: sarrajouini/station-ski:1.0.0
     # Uncomment if you need to build locally instead of using the image
     # build: ./
     restart: on-failure
