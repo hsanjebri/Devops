@@ -1,11 +1,24 @@
-# Start with a base image that includes OpenJDK 17
-FROM openjdk:17-jdk-alpine
 
-# Expose the port that your Spring Boot application will run on
+
+
+
+
+FROM openjdk:17-jdk-alpine AS downloader
+
+# Installer curl
+RUN apk add --no-cache curl
+
+# Définir l'URL du JAR dans une variable d'environnement
+ENV JAR_URL=http://192.168.33.10:8081/repository/maven-releases/tn/esprit/spring/gestion-station-ski/1.0/gestion-station-ski-1.0.jar
+
+# Télécharger le JAR depuis Nexus
+RUN curl -u admin:root -o /gestion-station-ski-1.0.jar $JAR_URL
+
+# Étape 2: Construire l'image finale
+FROM openjdk:17-jdk-alpine
 EXPOSE 8089
 
-# Add the JAR file from the target directory to the container
-ADD target/gestion-station-ski-1.0.jar gestion-station-ski-1.0.jar
+# Copier le JAR téléchargé depuis l'étape downloader
+COPY --from=downloader /gestion-station-ski-1.0.jar gestion-station-ski-1.0.jar
 
-# Set the entry point to run the application using the JAR file
-ENTRYPOINT ["java","-jar","/gestion-station-ski-1.0.jar"]
+ENTRYPOINT ["java", "-jar", "/gestion-station-ski-1.0.jar"]
