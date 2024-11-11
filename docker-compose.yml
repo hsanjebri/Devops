@@ -15,7 +15,7 @@ services:
   app-station-ski:
     depends_on:
       - mysqldb
-    image: wissem371/devops:latest
+    image: zarramiwissem-g3-gestion-station-ski:latest
     # Uncomment if you need to build locally instead of using the image
     # build: ./
     restart: on-failure

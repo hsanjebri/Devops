@@ -94,6 +94,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>5SE4-G3-gestion-station-ski</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
