@@ -30,7 +30,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - 80:81
+      - 81:80
     restart: unless-stopped
 
 volumes:
