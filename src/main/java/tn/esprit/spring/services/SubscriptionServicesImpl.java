@@ -18,7 +18,7 @@ import java.util.Set;
 @Slf4j
 @AllArgsConstructor
 @Service
-public class SubscriptionServicesImpl implements ISubscriptionServices{
+public class SubscriptionServicesImpl implements ISubscriptionServices {
 
     private ISubscriptionRepository subscriptionRepository;
 
@@ -63,19 +63,19 @@ public class SubscriptionServicesImpl implements ISubscriptionServices{
     @Override
     @Scheduled(cron = "*/30 * * * * *") /* Cron expression to run a job every 30 secondes */
     public void retrieveSubscriptions() {
-        for (Subscription sub: subscriptionRepository.findDistinctOrderByEndDateAsc()) {
-            Skier   aSkier = skierRepository.findBySubscription(sub);
-            log.info(sub.getNumSub().toString() + " | "+ sub.getEndDate().toString()
-                    + " | "+ aSkier.getFirstName() + " " + aSkier.getLastName());
+        for (Subscription sub : subscriptionRepository.findDistinctOrderByEndDateAsc()) {
+            Skier aSkier = skierRepository.findBySubscription(sub);
+            log.info(sub.getNumSub().toString() + " | " + sub.getEndDate().toString()
+                    + " | " + aSkier.getFirstName() + " " + aSkier.getLastName());
         }
     }
 
-   // @Scheduled(cron = "* 0 9 1 * *") /* Cron expression to run a job every month at 9am */
-    @Scheduled(cron = "*/30 * * * * *") /* Cron expression to run a job every 30 secondes */
+    // @Scheduled(cron = "* 0 9 1 * *") /* Cron expression to run a job every month at 9am */
+    @Scheduled(cron = "*/30 * * * * *") // Cron expression to run a job every 30 seconds
     public void showMonthlyRecurringRevenue() {
-        Float revenue = subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.MONTHLY)
-                + subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.SEMESTRIEL)/6
-                + subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.ANNUAL)/12;
+        Float revenue = (subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.MONTHLY) != null ? subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.MONTHLY) : 0.0f)
+                + (subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.SEMESTRIEL) != null ? subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.SEMESTRIEL) / 6 : 0.0f)
+                + (subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.ANNUAL) != null ? subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.ANNUAL) / 12 : 0.0f);
         log.info("Monthly Revenue = " + revenue);
     }
 }
