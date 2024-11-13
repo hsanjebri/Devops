@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_DATABASE=db
+      - MYSQL_DATABASE=stationSki
     ports:
       - 3306:3306
     volumes:
