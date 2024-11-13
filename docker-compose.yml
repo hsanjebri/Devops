@@ -1,36 +1,37 @@
-version: "3.8"
-
 services:
   mysqldb:
-    image: mysql:5.7
+    image: mysql:8.0.30
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=db
     ports:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "--host=localhost" ]
+      interval: 30s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
   app-station-ski:
     depends_on:
-      - mysqldb
-    image: hsan/station-ski:1.0.0
-    # Uncomment if you need to build locally instead of using the image
-    # build: ./
+      mysqldb:
+        condition: service_healthy
+    image: hassanjlassi23/gestion-station-ski:1.0.0
     restart: on-failure
     ports:
       - 8089:8089
-    environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/db?createDatabaseIfNotExist=true",
-        "spring.datasource.username" : "root",
-        "spring.datasource.password" : "",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update"
-      }'
     stdin_open: true
     tty: true
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 81:80
+    restart: unless-stopped
 
 volumes:
   db:
