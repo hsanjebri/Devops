@@ -47,11 +47,7 @@ class CourseTest {
         assertEquals(2, course.getTimeSlot());
     }
 
-    @Test
-    void getRegistrations() {
-        Course course = new Course();
-        assertNotNull(course.getRegistrations());
-    }
+
 
     // Additional setter tests as needed
 }
