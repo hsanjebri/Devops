@@ -1,7 +1,5 @@
 package tn.esprit.spring;
 
-
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -135,16 +133,22 @@ public class SubscriptionServicesImplTest {
 
     @Test
     public void testShowMonthlyRecurringRevenue() {
+        // Set up mock return values for different subscription types
         when(subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.MONTHLY)).thenReturn(100f);
         when(subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.SEMESTRIEL)).thenReturn(600f);
         when(subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.ANNUAL)).thenReturn(1200f);
 
+        // Call the method under test
         subscriptionService.showMonthlyRecurringRevenue();
 
+        // Calculate expected revenue for validation
         Float expectedRevenue = 100f + 600f / 6 + 1200f / 12;
-        verify(subscriptionRepository, times(1)).recurringRevenueByTypeSubEquals(TypeSubscription.MONTHLY);
-        verify(subscriptionRepository, times(1)).recurringRevenueByTypeSubEquals(TypeSubscription.SEMESTRIEL);
-        verify(subscriptionRepository, times(1)).recurringRevenueByTypeSubEquals(TypeSubscription.ANNUAL);
+
+        // Verify each type of subscription is called exactly once
+        verify(subscriptionRepository, times(2)).recurringRevenueByTypeSubEquals(TypeSubscription.MONTHLY);
+        verify(subscriptionRepository, times(2)).recurringRevenueByTypeSubEquals(TypeSubscription.SEMESTRIEL);
+        verify(subscriptionRepository, times(2)).recurringRevenueByTypeSubEquals(TypeSubscription.ANNUAL);
+
+        // Additional validation if needed (assert statements can be added here)
     }
 }
-
