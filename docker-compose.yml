@@ -27,11 +27,7 @@ services:
     stdin_open: true
     tty: true
 
-  nginx:
-    image: nginx:latest
-    ports:
-      - 8083:80
-    restart: unless-stopped
+
 
 volumes:
   db:
